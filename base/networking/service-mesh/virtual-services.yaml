@@ -1,0 +1,14 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: product-catalog
+  namespace: ecommerce
+spec:
+  hosts:
+  - product-catalog-service
+  http:
+  - route:
+    - destination:
+        host: product-catalog-service
+        subset: v1
+      weight: 100
