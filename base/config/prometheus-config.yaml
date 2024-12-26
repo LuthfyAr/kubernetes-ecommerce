@@ -2,12 +2,44 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: prometheus-config
-  namespace: monitoring
 data:
-  prometheus.yml: 
+  prometheus.yml: |
     global:
       scrape_interval: 15s
     scrape_configs:
       - job_name: 'kubernetes-pods'
         kubernetes_sd_configs:
           - role: pod
+
+# Grafana Dashboard
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard
+data:
+  dashboard.json: |
+    {
+      "dashboard": {
+        "title": "E-commerce Metrics",
+        "panels": [
+          {
+            "title": "Request Rate",
+            "type": "graph",
+            "targets": [
+              {
+                "expr": "rate(http_requests_total[5m])"
+              }
+            ]
+          },
+          {
+            "title": "Response Time",
+            "type": "graph",
+            "targets": [
+              {
+                "expr": "rate(http_response_time_seconds_sum[5m])"
+              }
+            ]
+          }
+        ]
+      }
+    }

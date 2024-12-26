@@ -2,9 +2,12 @@ apiVersion: app.redislabs.com/v1
 kind: RedisEnterpriseCluster
 metadata:
   name: redis-enterprise
-  namespace: ecommerce
 spec:
   nodes: 3
   persistentSpec:
     enabled: true
     storageClassName: "premium-rwo"
+  redisEnterpriseNodeResources:
+    limits:
+      cpu: "4000m"
+      memory: "8Gi"

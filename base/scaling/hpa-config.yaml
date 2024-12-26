@@ -2,12 +2,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: product-catalog-hpa
-  namespace: ecommerce
 spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: product-catalog
   minReplicas: 3
   maxReplicas: 10
   metrics:
@@ -17,3 +12,16 @@ spec:
       target:
         type: Utilization
         averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  - type: Pods
+    pods:
+      metric:
+        name: response_latency_milliseconds
+      target:
+        type: AverageValue
+        averageValue: 500
